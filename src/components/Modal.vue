@@ -4,7 +4,6 @@
       <header class="modal-header">
         <slot name="header">
           Pomodoro Customizado
-
           <button type="button" class="btn-close" @click="close">x</button>
         </slot>
       </header>
@@ -21,8 +20,6 @@
 
        <footer class="modal-footer">
           <slot name="footer">
-            I'm the default footer!
-
             <button type="button" class="btn-green" @click="setarTempo"> Começar!</button>
         </slot>
       </footer>
@@ -30,12 +27,11 @@
   </div>
 </template>
 
-
 <script>
 export default {
   name: 'Modal' ,
-  data(){
-    return{
+  data() {
+    return {
       showModal: false,
       minutos: 0,
       segundos: 0

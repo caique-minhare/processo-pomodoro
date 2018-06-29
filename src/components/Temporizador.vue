@@ -6,15 +6,9 @@
       <span id="segundos">{{segundos}}</span>
     </div>
     <div id="containerDeBotoesAcaoAtual">
-  			<button class="botao redondo" type="button" name="button" id="comecarTimer" v-if="!estadoTimer" @click="rodarTimer">
-          Play
-        </button>
-        <button class="botao redondo" type="button" name="button" id="pararTimer" v-if="estadoTimer" @click="pararTimer">Parar a fera</button>
-        <button class="botao redondo" type="button" name="button" id="resetarTimer" v-if="botaoResetar" @click="resetarTimer">Resetar Timer</button>
-    </div>
-    <div>
-      {{quantidadePomodoro}}
-      {{quantidadeTotalPomodoros}}
+  			<button class="botao redondo" type="button" name="button" id="comecarTimer" v-if="!estadoTimer" @click="rodarTimer">Começar sessão </button>
+        <button class="botao redondo" type="button" name="button" id="pararTimer" v-if="estadoTimer" @click="pararTimer">Pausar sessão</button>
+        <button class="botao redondo" type="button" name="button" id="resetarTimer" v-if="botaoResetar" @click="resetarTimer">Resetar sessão</button>
     </div>
   </div>
 </template>
@@ -126,19 +120,20 @@
 
 <style>
 #relogio{
-  font-size: 100px;
+  font-size: 10vh;
+}
+
+#containerDeBotoesAcaoAtual{
+  padding-bottom: 10px;
 }
 
 .botao{
-  border: none;
-  padding: 20px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  margin: 4px 2px;
+  color: white;
+  background: #4AAE9B;
+  width: auto;
+  height: 8vh;
+  border: 1px solid #4AAE9B;
+  border-radius: 2px;
 }
 
-.redondo{
-  border-radius: 50%;
-}
 </style>

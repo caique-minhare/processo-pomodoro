@@ -4,9 +4,14 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import VueSVGIcon from 'vue-svgicon'
+import BootstrapVue from 'bootstrap-vue'
+
+import 'bootstrap/dist/css/bootstrap.css';
+import 'bootstrap-vue/dist/bootstrap-vue.css';
 
 Vue.config.productionTip = false
 Vue.use(VueSVGIcon)
+Vue.use(BootstrapVue);
 
 /* eslint-disable no-new */
 new Vue({

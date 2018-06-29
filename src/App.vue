@@ -9,17 +9,23 @@
       <button type="button" name="button" @click="setOption(2)">Pausa Curta</button>
       <button type="button" name="button" @click="setOption(3)">Pausa Longa</button>
   </div>
-  <Modal v-show="modalVisivel" @close="closeModal" />
+
+  <div id="containerTabela">
+    <Tabela/>
+  </div>
+
+    <Modal v-show="modalVisivel" @close="closeModal" />
   </div>
 </template>
 
 <script>
 import Temporizador from './components/Temporizador'
 import Modal from './components/Modal'
+import Tabela from './components/Tabela'
 
 export default {
   name: 'App',
-  components:{ Temporizador, Modal },
+  components:{ Temporizador, Modal, Tabela },
   data(){
     return{
       mudou: true,
@@ -69,7 +75,7 @@ body{
 }
 
 .logo{
-  height: 8vh;
+  height: 7vh;
   width: auto;
 }
 
@@ -77,8 +83,12 @@ body{
   color: white;
   background: #4AAE9B;
   width: auto;
-  height: 10vh;
+  height: 8vh;
   border: 1px solid #4AAE9B;
   border-radius: 2px;
+}
+
+#containerTabela{
+  padding-top: 50px;
 }
 </style>

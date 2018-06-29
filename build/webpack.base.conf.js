@@ -15,7 +15,11 @@ const createLintingRule = () => ({
   include: [resolve('src'), resolve('test')],
   options: {
     formatter: require('eslint-friendly-formatter'),
-    emitWarning: !config.dev.showEslintErrorsInOverlay
+    emitWarning: !config.dev.showEslintErrorsInOverlay,
+    loaders: {
+             'scss': 'vue-style-loader!css-loader!sass-loader',
+             'sass': 'vue-style-loader!css-loader!sass-loader?indentedSyntax'
+         }
   }
 })
 

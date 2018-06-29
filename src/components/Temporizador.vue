@@ -60,8 +60,39 @@
         }
 		},
 
+    exibirNotificacao(){
+      if (!("Notification" in window)) {
+        alert("Este navegador não fornece suporte a notificações de desktop");
+      }
+
+      // Verificação para ver se as permissões já estão garantidas
+      else if (Notification.permission === "granted") {
+        // Se sim, criamos uma notificação
+        var notification = new Notification("Sua seção de Pomodoro acaba de terminar! Descanse \n uma pausa curta :D");
+      }
+
+      // Pedir permissão ao usuário
+      else if (Notification.permission !== 'denied') {
+        Notification.requestPermission(function (permission) {
+          // Aceite de permissão, criar notificação
+          if (permission === "granted") {
+            var notification = new Notification("Sua seção de Pomodoro acaba de terminar! Descanse uma pausa curta :D");
+          }
+        });
+      }
+    },
+
     contagemRegressiva(){
-      this.tempoTotal--;
+      if(this.tempoTotal == 0){
+        var audio = new Audio('http://soundbible.com/mp3/Elevator Ding-SoundBible.com-685385892.mp3');
+        audio.play();
+        this.exibirNotificacao();
+        this.resetarTimer();
+
+      }
+      else{
+        this.tempoTotal--;
+      }
 		}
   },
   computed:{

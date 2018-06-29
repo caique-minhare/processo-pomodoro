@@ -1,0 +1,79 @@
+<template>
+  <div id="temporizador">
+    <div id="relogio">
+      <span id="minutos">{{minutos}}</span>
+      <span id="separador">:</span>
+      <span id="segundos">{{segundos}}</span>
+    </div>
+    <div id="containerDeBotoesAcaoAtual">
+  			<button type="button" name="button" id="comecarTimer" v-if="!estadoTimer" @click="rodarTimer">Play na fera</button>
+        <button type="button" name="button" id="pararTimer" v-if="estadoTimer" @click="pararTimer">Parar a fera</button>
+        <button type="button" name="button" id="resetarTimer" v-if="botaoResetar" @click="resetarTimer">Resetar Timer</button>
+    </div>
+  </div>
+</template>
+
+<script type="text/javascript">
+  export default{
+    name: 'Temporizador' ,
+    props: ['opcao'],
+    watch: {
+      opcao: function(newVal){
+        this.tempoTotal = newVal*60;
+      }
+    },
+    data(){
+      return{
+        estadoTimer: null,
+  			tempoTotal: 25*60,
+  			botaoResetar: false
+      }
+    },
+
+    methods:{
+      rodarTimer(){
+        this.estadoTimer = setInterval(
+          () => this.contagemRegressiva(), 1000
+				);
+				this.botaoResetar = true;
+			},
+
+      pararTimer(){
+        clearInterval(this.estadoTimer);
+        this.estadoTimer = null;
+        this.botaoResetar = false;
+      },
+
+      resetarTimer(){
+        this.tempoTotal = (25*60);
+        this.pararTimer();
+        clearInterval(this.timer);
+        this.estadoTimer = null;
+        this.botaoResetar = false;
+      },
+
+      renderizadorTimer(tempo){
+        if( tempo < 10 ){
+          return '0' + tempo;
+        }else{
+          return '' + tempo;
+        }
+		},
+
+    contagemRegressiva(){
+      this.tempoTotal--;
+		}
+  },
+  computed:{
+    minutos: function(){
+      const minutos = Math.floor(this.tempoTotal/60);
+      return this.renderizadorTimer(minutos);
+    },
+
+    segundos: function(){
+      const segundos = this.tempoTotal - (this.minutos * 60);
+      return this.renderizadorTimer(segundos);
+    }
+  }
+}
+</script>

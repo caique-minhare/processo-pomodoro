@@ -6,9 +6,15 @@
       <span id="segundos">{{segundos}}</span>
     </div>
     <div id="containerDeBotoesAcaoAtual">
-  			<button type="button" name="button" id="comecarTimer" v-if="!estadoTimer" @click="rodarTimer">Play na fera</button>
-        <button type="button" name="button" id="pararTimer" v-if="estadoTimer" @click="pararTimer">Parar a fera</button>
-        <button type="button" name="button" id="resetarTimer" v-if="botaoResetar" @click="resetarTimer">Resetar Timer</button>
+  			<button class="botao redondo" type="button" name="button" id="comecarTimer" v-if="!estadoTimer" @click="rodarTimer">
+          Play
+        </button>
+        <button class="botao redondo" type="button" name="button" id="pararTimer" v-if="estadoTimer" @click="pararTimer">Parar a fera</button>
+        <button class="botao redondo" type="button" name="button" id="resetarTimer" v-if="botaoResetar" @click="resetarTimer">Resetar Timer</button>
+    </div>
+    <div>
+      {{quantidadePomodoro}}
+      {{quantidadeTotalPomodoros}}
     </div>
   </div>
 </template>
@@ -26,16 +32,23 @@
       return{
         estadoTimer: null,
   			tempoTotal: 25*60,
-  			botaoResetar: false
+  			botaoResetar: false,
+        quantidadePomodoro: 0,
+        quantidadeTotalPomodoros: 0
       }
     },
 
     methods:{
       rodarTimer(){
-        this.estadoTimer = setInterval(
-          () => this.contagemRegressiva(), 1000
-				);
-				this.botaoResetar = true;
+        if(this.quantidadePomodoro == 4){
+          alert("Estudos mostram que após 4 seções é benéfico realizar uma pausa longa")
+          this.quantidadePomodoro = 0
+        }else{
+          this.estadoTimer = setInterval(
+            () => this.contagemRegressiva(), 1000
+  				);
+  				this.botaoResetar = true;
+        }
 			},
 
       pararTimer(){
@@ -88,6 +101,8 @@
         audio.play();
         this.exibirNotificacao();
         this.resetarTimer();
+        this.quantidadeTotalPomodoros += 1;
+        this.quantidadePomodoro +=1;
 
       }
       else{
@@ -108,3 +123,22 @@
   }
 }
 </script>
+
+<style>
+#relogio{
+  font-size: 100px;
+}
+
+.botao{
+  border: none;
+  padding: 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  margin: 4px 2px;
+}
+
+.redondo{
+  border-radius: 50%;
+}
+</style>

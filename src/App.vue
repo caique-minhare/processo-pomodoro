@@ -1,26 +1,30 @@
 
 <template>
   <div id="app">
-    <img src="./assets/logo.png">
+    <img src="./assets/logo.png" class="logo">
     <Temporizador :opcao ="opcao"></Temporizador>
     <div id="containerDeBotoesPomodoro">
       <button type="button" name="button" @click="setOption(1)">Pomodoro</button>
+      <button type="button" name="button" @click="mostrarModal">Pomodoro Customizado</button>
       <button type="button" name="button" @click="setOption(2)">Pausa Curta</button>
       <button type="button" name="button" @click="setOption(3)">Pausa Longa</button>
   </div>
+  <Modal v-show="modalVisivel" @close="closeModal" />
   </div>
 </template>
 
 <script>
 import Temporizador from './components/Temporizador'
+import Modal from './components/Modal'
 
 export default {
   name: 'App',
-  components:{ Temporizador },
+  components:{ Temporizador, Modal },
   data(){
     return{
       mudou: true,
-      opcao: 25
+      opcao: 25,
+      modalVisivel: false
     }
   },
   methods:{
@@ -37,6 +41,14 @@ export default {
         this.opcao = 10;
         this.mudou = false;
       }
+    },
+
+    mostrarModal(){
+      this.modalVisivel = true;
+    },
+    closeModal(value){
+      this.modalVisivel = false;
+      this.opcao = parseFloat(value.minutos)+parseFloat(value.segundos)/60;
     }
   }
 }
@@ -48,7 +60,25 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
+  color: #fff;
   margin-top: 60px;
+}
+
+body{
+  background-color: #2c3e50;
+}
+
+.logo{
+  height: 8vh;
+  width: auto;
+}
+
+#containerDeBotoesPomodoro button {
+  color: white;
+  background: #4AAE9B;
+  width: auto;
+  height: 10vh;
+  border: 1px solid #4AAE9B;
+  border-radius: 2px;
 }
 </style>

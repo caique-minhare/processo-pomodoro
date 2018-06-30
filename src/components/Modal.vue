@@ -1,50 +1,62 @@
 <template>
-  <div class="modal-backdrop">
-    <div class="modal">
-      <header class="modal-header">
-        <slot name="header">
-          Pomodoro Customizado
-          <button type="button" class="btn-close" @click="close">x</button>
-        </slot>
-      </header>
+  <b-modal ref="modalRef" :title="tituloModal"  :hide-footer="true">
+      <div v-if="tipoModal == 0">
+        Adicione o tempo customizado para seu pomodoro.
+        <br>
+        <input v-model="minutos" type="number" name="minutos" value="" placeholder="Minutos">
+        <span>:</span>
+        <input v-model="segundos" type="number" name="segundos" value="" placeholder="Segundos">
+              <b-btn class="mt-3" variant="outline-danger" block @click="setarTempo">Setar tempo</b-btn>
+      </div>
+      <div v-if="tipoModal == 1">
+        Quantidade de sessões: {{quantSessoes}}
+        <br>
+        Tempo de atividade: {{ parseFloat(quantSessoes*25) }}
 
-      <section class="modal-body">
-        <slot name="body">
-          Adicione o tempo customizado para seu pomodoro.
-          <br>
-          <input v-model="minutos" type="number" name="minutos" value="" placeholder="Minutos">
-          <span>:</span>
-          <input v-model="segundos" type="number" name="segundos" value="" placeholder="Segundos">
-        </slot>
-       </section>
+      </div>
+      <div class="d-block text-center">
 
-       <footer class="modal-footer">
-          <slot name="footer">
-            <button type="button" class="btn-green" @click="setarTempo"> Começar!</button>
-        </slot>
-      </footer>
-    </div>
-  </div>
+      </div>
+  </b-modal>
 </template>
 
 <script>
 export default {
   name: 'Modal' ,
+  props: ['titulo'],
+  watch:{
+    titulo: function(newVal){
+      this.tituloModal = newVal;
+    }
+  },
   data() {
     return {
       showModal: false,
       minutos: 0,
-      segundos: 0
+      segundos: 0,
+      tituloModal: null,
+      tipoModal: null,
+      quantSessoes: null,
+      quantPausas: null
     }
   },
   methods:{
-    close() {
+    mostrarModal(value){
+      this.tituloModal = value.nomeHeader;
+      this.tipoModal = value.tipoModal;
+      this.quantSessoes = value.quantidadeDeSessoes;
+      this.quantPausas = value.quantidadeDePausas;
+      this.$refs.modalRef.show();
+    },
+    fecharModal() {
        this.$emit('close');
      },
      setarTempo(event){
        let minutos = this.minutos;
        let segundos = this.segundos;
-       this.$emit('close', {minutos, segundos});
+       this.$emit('setarTempo', {minutos, segundos});
+       this.$refs.modalRef.hide()
+
      }
   }
 }

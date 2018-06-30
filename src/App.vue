@@ -1,20 +1,46 @@
 
 <template>
   <div id="app">
-    <img src="./assets/logo.png" class="logo">
-    <Temporizador :opcao ="opcao"></Temporizador>
-    <div id="containerDeBotoesPomodoro">
-      <button type="button" name="button" @click="setOption(1)">Pomodoro</button>
-      <button type="button" name="button" @click="mostrarModal">Pomodoro Customizado</button>
-      <button type="button" name="button" @click="setOption(2)">Pausa Curta</button>
-      <button type="button" name="button" @click="setOption(3)">Pausa Longa</button>
-  </div>
+    <b-container>
+      <b-row align-h="center">
+        <img src="./assets/logo.png" class="logo">
+      </b-row>
 
-  <div id="containerTabela">
-    <Tabela/>
-  </div>
+      <b-row align-h="center">
+          <Temporizador :opcao ="opcao" :estadoAtivado="botaoAtivado" @termino="atualizaDados"></Temporizador>
+      </b-row>
 
-    <Modal v-show="modalVisivel" @close="closeModal" />
+      <div id="containerDeBotoesPomodoro">
+        <b-container>
+          <b-row align-h="center">
+            <b-col cols="3">
+              <b-button :size="lg" @click="setOption(1)">Pomodoro</b-button>
+            </b-col>
+            <b-col cols="3">
+                <b-button :size="sm" @click="mostrarModal({nomeHeader:'Pomodoro Customizado',tipoModal:0})">Pomodoro Cust</b-button>
+            </b-col>
+          </b-row>
+          <br>
+          <b-row align-h="center">
+            <b-col cols="3">
+              <b-button :size="lg" @click="setOption(2)">Pausa Curta</b-button>
+            </b-col>
+            <b-col cols="3">
+              <b-button :size="lg" @click="setOption(3)">Pausa Longa</b-button>
+            </b-col>
+          </b-row>
+          <br>
+          <b-row align-h="center">
+            <b-col cols="12">
+              <b-button @click="mostrarModal({nomeHeader: 'Dados do usuário', tipoModal: 1})"
+                        :titulo="Dados">Ver dados</b-button>
+            </b-col>
+          </b-row>
+        </b-container>
+      </div>
+
+      <Modal ref="modalRef" @setarTempo="fecharModal"/>
+      </b-container>
   </div>
 </template>
 
@@ -30,31 +56,45 @@ export default {
     return{
       mudou: true,
       opcao: 25,
-      modalVisivel: false
+      modalVisivel: false,
+      quantidadeDePausasCurtas: 0,
+      quantidadeDePausasLongas: 0,
+      quantidadeDePomodoros:0,
+      botaoAtivado: null
     }
   },
   methods:{
     setOption(op){
       if(op == 1){
-        this.opcao = 25;
+        this.opcao = .05;
         this.mudou = false;
+        this.botaoAtivado = 1;
       }
       else if(op == 2) {
         this.opcao = 5;
         this.mudou = false;
+        this.botaoAtivado = 2;
       }
       else if(op == 3){
         this.opcao = 10;
         this.mudou = false;
+        this.botaoAtivado = 3;
       }
     },
 
-    mostrarModal(){
-      this.modalVisivel = true;
+    mostrarModal(value){
+      value.quantidadeDeSessoes = this.quantidadeDePomodoros;
+      value.quantidadeDePausas = this.quantidadeDePausasCurtas + this.quantidadeDePausasLongas;
+      this.$refs.modalRef.mostrarModal(value)
     },
-    closeModal(value){
-      this.modalVisivel = false;
+    fecharModal(value){
       this.opcao = parseFloat(value.minutos)+parseFloat(value.segundos)/60;
+    },
+
+    atualizaDados(value){
+      this.quantidadeDePomodoros = value.qTP;
+      this.quantidadeDePausasCurtas = value.qPC;
+      this.quantidadeDePausasLongas = value.qPL;
     }
   }
 }
@@ -82,8 +122,6 @@ body{
 #containerDeBotoesPomodoro button {
   color: white;
   background: #4AAE9B;
-  width: auto;
-  height: 8vh;
   border: 1px solid #4AAE9B;
   border-radius: 2px;
 }

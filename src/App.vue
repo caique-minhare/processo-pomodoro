@@ -66,7 +66,7 @@ export default {
   methods:{
     setOption(op){
       if(op == 1){
-        this.opcao = .05;
+        this.opcao = 25;
         this.mudou = false;
         this.botaoAtivado = 1;
       }
